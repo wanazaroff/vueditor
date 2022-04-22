@@ -68,7 +68,8 @@
         this.iframeDoc.designMode = 'on'
         this.iframeBody.spellcheck = getConfig('spellcheck')
         this.iframeBody.style.cssText = 'overflow-x: hidden;'
-        this.iframeDoc.head.insertAdjacentHTML('beforeEnd', '<style>pre {margin: 0; padding: 0.5rem; background: #f5f2f0;}</style>')
+        let headStyle = getConfig('headStyle') || '<style>pre {margin: 0; padding: 0.5rem; background: #f5f2f0;}</style>'
+        this.iframeDoc.head.insertAdjacentHTML('beforeEnd', headStyle)
         this.addEvent()
       },
 

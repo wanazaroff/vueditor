@@ -84,6 +84,22 @@
           }
         }
         this.updateButtonStates(json)
+        this.updatePopupSelection()
+      },
+
+      updatePopupSelection () {
+        let selection = this.getSelection()
+        let range = this.getRange()
+        if (!selection || !range) {
+          return
+        }
+        let container = range.commonAncestorContainer
+        container.nodeType === 3 && (container = container.parentNode)
+        let fontSize = window.getComputedStyle(container).fontSize
+        this.$store.dispatch('updateSelectValue', {name: 'fontSize', value: fontSize})
+        let fontFamily = window.getComputedStyle(container).fontFamily
+        let fontName = fontFamily && fontFamily.split(', ')[0].replaceAll('"', '')
+        this.$store.dispatch('updateSelectValue', {name: 'fontName', value: fontName})
       },
 
       addEvent () {

@@ -220,13 +220,13 @@
             }
             this.iframeDoc.execCommand('fontSize', false, 7)
             let container = range.commonAncestorContainer
-            container.nodeType === 3 && (container = container.parentNode)
-            container.tagName.toLowerCase() === 'span' && (container = container.parentNode)
-            Array.prototype.forEach.call(container.getElementsByTagName('span'), function (span) {
-              if (span.style.fontSize.trim() === '-webkit-xxx-large' || span.style.fontSize.trim() === 'xxx-large') {
-                span.style.fontSize = value
+            container.nodeType === 3 && (container = container.parentElement)
+            container = (container && container.parentElement) || this.iframeDoc
+            Array.prototype.forEach.call(container.querySelectorAll("*[style]"), function (node) {
+              if (node.style.fontSize.trim() === '-webkit-xxx-large' || node.style.fontSize.trim() === 'xxx-large') {
+                node.style.fontSize = value
               }
-              span.normalize()
+              node.normalize()
             })
           } else {
             if (document.queryCommandSupported('styleWithCss')) {

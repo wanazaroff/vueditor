@@ -20,6 +20,7 @@ function isObject (obj) {
 function checkConfig (config) {
   let proto = {
     toolbar: 'array.string',
+    shortbar: 'array.string',
     fontName: 'array.object',
     fontSize: 'array.string',
     uploadUrl: 'string',

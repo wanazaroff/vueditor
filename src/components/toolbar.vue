@@ -81,10 +81,17 @@
         btns,
         selects,
         lang: getLang(),
-        config: getConfig('toolbar')
+        fullbar: getConfig('toolbar'),
+        shortbar: getConfig('shortbar')
       }
     },
     computed: {
+      config: function () {
+        return !this.fullscreen && this.shortbar || this.fullbar
+      },
+      fullscreen: function () {
+        return this.$store.state.fullscreen
+      },
       states: function () {
         return this.$store.state.toolbar
       },

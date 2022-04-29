@@ -8,6 +8,7 @@ export default function () {
   let toolbar = {}
   let {btns, selects} = getToolbar()
   let config = getConfig('toolbar')
+  getConfig('shortbar') && (config = Array.from(new Set(config.concat(getConfig('shortbar')))))
 
   config.forEach(function (name) {
     if (name !== 'divider' && name !== '|') {

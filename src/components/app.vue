@@ -2,7 +2,7 @@
 <template>
   <div class="vueditor" :id="config.id" :class="[{'ve-fullscreen': fullscreen}].concat(config.classList)">
     <ve-toolbar></ve-toolbar>
-    <ve-design></ve-design>
+    <ve-design @focus="$emit('focus', $event)" @blur="$emit('blur', $event)"></ve-design>
     <template v-for="item in list">
       <component v-if="config.toolbar.indexOf(item) !== -1" :tagName="item" :is="'ve-' + item.toLowerCase()"></component>
     </template>
@@ -47,10 +47,18 @@
       've-fullscreen': fullscreen
     },
     computed: {
+      content: function () {
+        return this.$store.state.content
+      },
       fullscreen: function () {
         return this.$store.state.fullscreen
       }
     },
+    watch: {
+      'content': function (val) {
+        this.$emit('input', val)
+      }      
+   },
     methods: {
       setContent (content) {
         this.$store.dispatch('updateContent', content)

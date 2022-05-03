@@ -25,11 +25,11 @@
     <a href="https://github.com/hifarer/vueditor">Github</a>
   </div>
   <div id="editor1">
-    <Vueditor></Vueditor>
+    <Vueditor @input="console.log('onInput', $event)" @focus="this.console.log('focus emited')" @blur="this.console.log('blur emited')"></Vueditor>
   </div>
   <div id="editor2"></div>
 
-  <script src="//cdn.bootcss.com/vue/2.0.5/vue.min.js"></script>
+  <script src="//cdn.bootcss.com/vue/2.6.14/vue.min.js"></script>
   <script src="//cdn.bootcss.com/vuex/2.0.0/vuex.min.js"></script>
   <script src="./dist/language/lang.cn.js"></script>
   <script src="./dist/plugins/emoji.min.js"></script>

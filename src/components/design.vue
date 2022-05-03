@@ -115,6 +115,8 @@
         }, false)
         this.iframeBody.addEventListener('keydown', this.keydownHandler, false)
         this.iframeBody.addEventListener('keyup', this.keyupHandler, false)
+        this.iframeWin.addEventListener('focus', (event) => this.$emit('focus', event))
+        this.iframeWin.addEventListener('blur', (event) => this.$emit('blur', event))
         this.selectionChange()
       },
 

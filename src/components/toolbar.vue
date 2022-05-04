@@ -97,10 +97,17 @@
       },
       view: function () {
         return this.$store.state.view
+      },
+      readonly: function () {
+        return this.$store.state.readonly
       }
     },
     watch: {
       'view': function (val) {
+        if (this.readonly) {
+          this.setReadonly(true)
+          return
+        }
         let states = {}
         let exArr = ['sourceCode', 'markdown', 'fullscreen', 'divider', '|']
         this.config.forEach(item => {
@@ -109,9 +116,27 @@
           }
         })
         this.$store.dispatch('updateButtonStates', states)
+      },
+      'fullscreen': function (val) {
+        if (this.readonly) {      
+          this.setReadonly(true)
+        }
+      },
+      'readonly': function (val) {
+        this.setReadonly(val)
       }
     },
     methods: {
+      setReadonly (val) {
+        let states = {}
+        let exArr = ['fullscreen', 'divider', '|']
+        this.config.forEach(item => {
+          if (exArr.indexOf(item) === -1) {
+            states[item] = !val ? 'default' : 'disabled'
+          }
+        })
+        this.$store.dispatch('updateButtonStates', states)
+      },
       btnHandler (event, name) {
         if (this.states[name].status === 'disabled') return
         let btn = this.btns[name]

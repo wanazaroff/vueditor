@@ -46,6 +46,17 @@
       've-markdown': markdown,
       've-fullscreen': fullscreen
     },
+    props: {
+      value: null,
+      readonly: {
+        type: Boolean,
+        default: false
+      }
+    },
+    mounted () {
+      this.setReadonly(this.readonly)
+      this.setContent(this.value)
+    },
     computed: {
       content: function () {
         return this.$store.state.content
@@ -57,9 +68,18 @@
     watch: {
       'content': function (val) {
         this.$emit('input', val)
+      },
+      value: function  (val) {
+        this.setContent(val)
+      },
+      readonly: function  (val) {
+        this.setReadonly(val)
       }      
    },
     methods: {
+      setReadonly (val) {
+        this.$store.dispatch('setReadonly', val)
+      },      
       setContent (content) {
         this.$store.dispatch('updateContent', content)
       },

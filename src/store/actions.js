@@ -27,6 +27,10 @@ export const setFullScreen = ({ commit }, data) => {
   commit('SET_FULL_SCREEN', data)
 }
 
+export const setReadonly = ({ commit }, data) => {
+  commit('SET_READONLY', data)
+}
+
 export const callMethod = ({ commit }, data) => {
   commit('CALL_METHOD', data)
 }

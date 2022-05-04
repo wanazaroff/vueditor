@@ -27,7 +27,8 @@
       view: 'view',
       content: 'content',
       command: 'command',
-      states: 'toolbar'
+      states: 'toolbar',
+      readonly: 'readonly'
     }),
 
     watch: {
@@ -47,6 +48,9 @@
       },
       'command': function (data) {
         this.exec(data.name, data.value)
+      },
+      'readonly': function (val) {
+        this.setReadonly(val)
       }
     },
 
@@ -65,14 +69,16 @@
           this.iframeBody.innerHTML !== this.cache && (this.iframeBody.innerHTML = this.cache)
           this.cache = ''
         }
-        this.iframeDoc.designMode = 'on'
+        this.setReadonly(this.readonly)
         this.iframeBody.spellcheck = getConfig('spellcheck')
         this.iframeBody.style.cssText = 'overflow-x: hidden;'
         let headStyle = getConfig('headStyle') || '<style>pre {margin: 0; padding: 0.5rem; background: #f5f2f0;}</style>'
         this.iframeDoc.head.insertAdjacentHTML('beforeEnd', headStyle)
         this.addEvent()
       },
-
+      setReadonly (val) {
+        this.iframeDoc.designMode = !val ? 'on' : 'off'
+      },
       // init, selection change
       updateStates () {
         let json = {}

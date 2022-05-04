@@ -31,6 +31,7 @@ export default function () {
       content: '',
       toolbar,
       fullscreen: false,
+      readonly: false,
       rect: {
         left: 0,
         top: 0,

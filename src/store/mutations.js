@@ -40,6 +40,10 @@ export default {
     state.fullscreen = data
   },
 
+  SET_READONLY (state, data) {
+    state.readonly = data
+  },
+
   CALL_METHOD (state, data) {
     state.callee = data
   },

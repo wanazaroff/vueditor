@@ -54,13 +54,13 @@
       <div v-if="item in btns" 
         @click.stop.prevent="btnHandler($event, item)" 
         :title="lang[item].title"
-        :class="{'ve-active': states[item].status == 'actived', 've-disabled': states[item].status == 'disabled'}" 
+        :class="{'ve-active': states[item].status == 'actived', 've-disabled': isDisabled(item)}" 
         unselectable="on">
         <i :class="[btns[item].className]"></i>
       </div>
       <div v-if="item in selects" 
         @click.stop.prevent="selectHandler($event, item)" 
-        :class="[{'ve-disabled': states[item].status == 'disabled'}, selects[item].className, 've-select']" 
+        :class="[{'ve-disabled': isDisabled(item)}, selects[item].className, 've-select']" 
         unselectable="on">
         <span>{{states[item].value}}</span><i :class="{'ve-triangle-down': !states[item].display, 've-triangle-up': states[item].display}"></i>
       </div>
@@ -104,10 +104,6 @@
     },
     watch: {
       'view': function (val) {
-        if (this.readonly) {
-          this.setReadonly(true)
-          return
-        }
         let states = {}
         let exArr = ['sourceCode', 'markdown', 'fullscreen', 'divider', '|']
         this.config.forEach(item => {
@@ -116,29 +112,18 @@
           }
         })
         this.$store.dispatch('updateButtonStates', states)
-      },
-      'fullscreen': function (val) {
-        if (this.readonly) {      
-          this.setReadonly(true)
-        }
-      },
-      'readonly': function (val) {
-        this.setReadonly(val)
       }
     },
     methods: {
-      setReadonly (val) {
-        let states = {}
-        let exArr = ['fullscreen', 'divider', '|']
-        this.config.forEach(item => {
-          if (exArr.indexOf(item) === -1) {
-            states[item] = !val ? 'default' : 'disabled'
-          }
-        })
-        this.$store.dispatch('updateButtonStates', states)
+      isDisabled (item) {
+        const exArr = ['sourceCode', 'markdown', 'fullscreen', 'divider', '|']
+        if (exArr.indexOf(item)  !== -1) {
+          return  false
+        }
+        return this.readonly || this.states[item].status == 'disabled'
       },
       btnHandler (event, name) {
-        if (this.states[name].status === 'disabled') return
+        if (this.isDisabled(name)) return
         let btn = this.btns[name]
         if (btn.action) {
           if (btn.native) {
@@ -151,7 +136,7 @@
         this.showPopup(name, event.currentTarget)
       },
       selectHandler (event, name) {
-        if (this.states[name].status === 'disabled') return
+        if (this.isDisabled(name)) return
         this.updateStates(name)
         this.showPopup(name, event.currentTarget)
       },

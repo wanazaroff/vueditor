@@ -25,9 +25,12 @@
     <a href="https://github.com/hifarer/vueditor">Github</a>
   </div>
   <div id="editor1">
-    <Vueditor :value="`fill your content here`"  @input="console.log('onInput', $event)" @focus="this.console.log('focus emited')" @blur="this.console.log('blur emited')"></Vueditor>
+    <Vueditor readonly :value="`fill your content here`"  @input="console.log('onInput', $event)" @focus="this.console.log('focus emited')" @blur="this.console.log('blur emited')"></Vueditor>
   </div>
-  <div id="editor2"></div>
+  <div > 
+    <div id="editor2"></div>
+    <div id="editor3"></div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuex@2.0.0"></script>
@@ -76,17 +79,29 @@
     })
   </script>
   <script>
-    let inst = Vueditor.createEditor('#editor2', {
-      lang: lang,
-      toolbar: [
-        'removeFormat', 'undo', 'redo', '|', 'elements', 'fontName', 'fontSize', 'foreColor', 'backColor', 'sourceCode'
-      ],
-      uploadUrl: '',
-      id: 'someid',
-      classList: ['someclass']
-    })
-    inst.setContent('fill your content here')
-    inst.setReadonly(true)
+    const attachEditor = (selector, content) => {
+      let inst = Vueditor.createEditor( selector, {
+        lang: lang,
+        toolbar: [
+          'removeFormat', 'undo', 'redo', '|', 'elements', 'fontName', 'fontSize', 'foreColor', 'backColor', 'fullscreen', 'sourceCode'
+        ],
+        uploadUrl: '',
+        id: 'someid',
+        classList: ['someclass']
+      })
+      inst.$on('input',  function() {
+        console.log('input', this.getContent())
+      })
+      inst.$on('focus',  function() {
+        console.log('focus')
+      })
+      inst.$on('blur',  function() {
+        console.log('blur')
+      })
+      inst.setContent(content)
+    }
+    attachEditor('#editor2', 'fill your content here 2')
+    attachEditor('#editor3', 'fill your content here 3')
   </script>
 </body>
 </html>

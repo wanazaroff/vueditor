@@ -2,13 +2,11 @@
   .ctn {
     width: 240px;
     height: 90px;
-    margin-left: -102px;
   }
 </style>
 
 <template>
-  <div class="ve-popover" :class="$style.ctn" 
-  :style="{left: rect.left + 'px', top: (rect.top + rect.height) + 'px'}" v-show="showPopup">
+  <div class="ve-popover" :class="$style.ctn" :style="style" v-show="showPopup">
     <div class="ve-pop-arrow"></div>
     <div class="ve-pop-header">{{lang.title}}</div>
     <div class="ve-pop-body">
@@ -21,9 +19,11 @@
 </template>
 
 <script>
+  import veMixin from '../mixins'
   import { getLang } from '../config/lang.js'
 
   export default {
+    mixins: [veMixin],
     data () {
       return {
         val: '',
@@ -31,19 +31,22 @@
       }
     },
     computed: {
-      rect: function () {
-        return this.$store.state.rect
-      },
       showPopup: function () {
         return this.$store.state.toolbar.link.showPopup
       },
       callee: function () {
         return this.$store.state.callee
-      }
+      },
+      range: function () {
+        return this.$store.state.range
+      },
     },
     watch: {
       'callee': function (val) {
         val.name === 'unLink' && this.unLinkHandler()
+      },
+      'showPopup': function (val) {
+        val && this.setVal()
       }
     },
     methods: {
@@ -52,7 +55,16 @@
         href.match(/^https?:\/\//igm) === null && (href = 'http://' + href)
         return href
       },
+      setVal () {
+        this.val = ''
+        if (this.range) {
+          let container = this.range.commonAncestorContainer
+          container.nodeType === 3 && (container = container.parentNode)
+          container && container.nodeName ==='A' &&  (this.val = container.href)
+        }
+      },
       linkHandler () {
+        this.unLinkHandler()
         let href = this.checkValid()
         this.$store.dispatch('execCommand', { name: 'createlink', value: href })
         this.$store.dispatch('updatePopupDisplay')

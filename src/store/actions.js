@@ -1,3 +1,6 @@
+export const updateRangeValue = ({ commit }, data) => {
+  commit('UPDATE_RANGE_VALUE', data)
+}
 
 export const updateSelectValue = ({ commit }, data) => {
   commit('UPDATE_SELECT_VALUE', data)

@@ -99,6 +99,7 @@
         if (!selection || !range) {
           return
         }
+        this.$store.dispatch('updateRangeValue', range)
         let container = range.commonAncestorContainer
         container.nodeType === 3 && (container = container.parentNode)
         let fontSize = window.getComputedStyle(container).fontSize
@@ -364,7 +365,8 @@
           newRange.selectNode(container)
           this.setRange(newRange)
           this.exec('Unlink', null)
-          this.removeRange(newRange)
+          // Keep range after unlink
+          // this.removeRange(newRange)
         } else {
           this.exec('Unlink', null)
         }

@@ -1,6 +1,10 @@
 
 export default {
 
+  UPDATE_RANGE_VALUE (state, data) {
+    state.range = data
+  },
+
   UPDATE_SELECT_VALUE ({ toolbar }, { name, value }) {
     toolbar[name].value = value
   },

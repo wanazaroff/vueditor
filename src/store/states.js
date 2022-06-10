@@ -45,7 +45,8 @@ export default function () {
       callee: {
         name: '',
         params: ''
-      }
+      },
+      range: ''
     },
     actions,
     mutations
